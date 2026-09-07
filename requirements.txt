@@ -1,0 +1,7 @@
+# Pinned exactly. The site must still build in February without anyone
+# touching it, and mkdocs-material's search internals are what the Russian
+# search behaviour depends on — an unpinned minor bump can break it silently.
+# On upgrade: bump here, run ./site/build.sh && python3 site/test_search.py
+# locally before pushing, and read the search comment in mkdocs.yml first.
+mkdocs==1.6.1
+mkdocs-material==9.7.7

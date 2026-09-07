@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{#
+  Issue #20: every page carries noindex, not just robots.txt.
+
+  robots.txt asks crawlers not to fetch. It does not stop a URL that leaked
+  some other way from appearing in results — a crawler that never fetches the
+  page can still list it. The meta tag is the instruction that survives that.
+
+  Neither is access control. Anyone with the URL reads the site.
+#}
+{% block extrahead %}
+  <meta name="robots" content="noindex, nofollow">
+{% endblock %}

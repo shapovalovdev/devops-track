@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Six months: from support to DevOps/SRE</title>
+<style>
+  :root {
+    --paper:   #EEF0F3;
+    --card:    #FAFBFC;
+    --ink:     #16202B;
+    --ink-2:   #47546A;
+    --ink-3:   #78849A;
+    --rule:    #D2D8E1;
+    --rule-2:  #E1E6EC;
+    --lane:    #E5E9EF;
+
+    --t-fund:   #2E6C8A;
+    --t-prac:   #8A5A2E;
+    --t-stand:  #96702A;
+    --t-career: #4A7A48;
+    --t-tool:   #5D6B7A;
+    --gate:     #B23A2B;
+
+    --bar-text: #FFFFFF;
+
+    --font-display: Cambria, "Noto Serif", "PT Serif", Georgia, "Times New Roman", serif;
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, "Roboto Mono", monospace;
+
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:   #12171D;
+      --card:    #191F27;
+      --ink:     #E4E9EF;
+      --ink-2:   #A3AFBE;
+      --ink-3:   #77828F;
+      --rule:    #2C343E;
+      --rule-2:  #232A33;
+      --lane:    #1E252E;
+
+      --t-fund:   #3A87A8;
+      --t-prac:   #A66E38;
+      --t-stand:  #B08733;
+      --t-career: #5C9459;
+      --t-tool:   #71818F;
+      --gate:     #D9604D;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:   #12171D;
+    --card:    #191F27;
+    --ink:     #E4E9EF;
+    --ink-2:   #A3AFBE;
+    --ink-3:   #77828F;
+    --rule:    #2C343E;
+    --rule-2:  #232A33;
+    --lane:    #1E252E;
+
+    --t-fund:   #3A87A8;
+    --t-prac:   #A66E38;
+    --t-stand:  #B08733;
+    --t-career: #5C9459;
+    --t-tool:   #71818F;
+    --gate:     #D9604D;
+  }
+
+  :root[data-theme="light"] {
+    --paper:   #EEF0F3;
+    --card:    #FAFBFC;
+    --ink:     #16202B;
+    --ink-2:   #47546A;
+    --ink-3:   #78849A;
+    --rule:    #D2D8E1;
+    --rule-2:  #E1E6EC;
+    --lane:    #E5E9EF;
+
+    --t-fund:   #2E6C8A;
+    --t-prac:   #8A5A2E;
+    --t-stand:  #96702A;
+    --t-career: #4A7A48;
+    --t-tool:   #5D6B7A;
+    --gate:     #B23A2B;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 20px 88px;
+    display: flex;
+    flex-direction: column;
+    gap: 52px;
+  }
+
+  /* ---------- header ---------- */
+
+  .masthead { display: flex; flex-direction: column; gap: 14px; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .masthead h1 {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 5.6vw, 46px);
+    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .standfirst {
+    font-size: 17px;
+    color: var(--ink-2);
+    max-width: 62ch;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 30px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .fact { display: flex; flex-direction: column; gap: 1px; padding: 6px 0; }
+
+  .fact b {
+    font-family: var(--font-mono);
+    font-size: 19px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .fact span { font-size: 12px; color: var(--ink-3); }
+
+  /* ---------- section frame ---------- */
+
+  .block { display: flex; flex-direction: column; gap: 18px; }
+
+  .block > h2 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+    text-wrap: balance;
+  }
+
+  .lede { font-size: 15px; color: var(--ink-2); max-width: 64ch; }
+
+  /* ---------- roster chart ---------- */
+
+  .scroller {
+    overflow-x: auto;
+    padding-bottom: 6px;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    border-radius: 3px;
+  }
+
+  .roster {
+    display: grid;
+    grid-template-columns: 116px repeat(13, minmax(48px, 1fr));
+    align-items: center;
+    row-gap: 7px;
+    min-width: 800px;
+    padding: 14px 14px 16px;
+  }
+
+  .guides {
+    grid-column: 2 / -1;
+    grid-row: 1 / -1;
+    background-image: repeating-linear-gradient(
+      to right, var(--rule-2) 0 1px, transparent 1px calc(100% / 13)
+    );
+  }
+
+  .month {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    text-align: center;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-2);
+    text-align: center;
+    padding: 3px 0;
+  }
+
+  .num.is-now {
+    color: var(--paper);
+    background: var(--ink);
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  .num.is-done {
+    color: var(--t-career);
+    font-weight: 600;
+  }
+
+
+  .rail {
+    grid-column: 1;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    padding-right: 12px;
+    text-align: right;
+  }
+
+  .lane {
+    grid-column: 2 / -1;
+    height: 26px;
+    background: var(--lane);
+    border-radius: 2px;
+  }
+
+  .bar {
+    height: 26px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--bar-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 2px;
+    transform-origin: left center;
+    animation: grow 480ms cubic-bezier(0.22, 0.9, 0.3, 1) backwards;
+  }
+
+  @keyframes grow { from { transform: scaleX(0.02); opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar { animation: none; }
+  }
+
+  .bar.fund   { background: var(--t-fund); }
+  .bar.prac   { background: var(--t-prac); }
+  .bar.stand  { background: var(--t-stand); }
+  .bar.tool   { background: var(--t-tool); }
+  .bar.port   { background: var(--t-career); }
+
+  .bar.career {
+    background: color-mix(in srgb, var(--t-career) 20%, transparent);
+    border: 1px solid var(--t-career);
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .gatemark {
+    justify-self: center;
+    width: 11px;
+    height: 11px;
+    background: var(--gate);
+    transform: rotate(45deg);
+    border-radius: 1px;
+  }
+
+  .rail.gates { color: var(--gate); }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+
+  .legend span { display: flex; align-items: center; gap: 7px; }
+
+  .swatch { width: 11px; height: 11px; border-radius: 2px; flex: none; }
+  .swatch.fund { background: var(--t-fund); }
+  .swatch.prac { background: var(--t-prac); }
+  .swatch.stand { background: var(--t-stand); }
+  .swatch.career { background: var(--t-career); }
+  .swatch.tool { background: var(--t-tool); }
+  .swatch.gate { background: var(--gate); transform: rotate(45deg); }
+
+  /* ---------- gates ---------- */
+
+  .gatelist { display: flex; flex-direction: column; gap: 0; }
+
+  .gate-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    padding: 15px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .gate-row:last-child { border-bottom: 1px solid var(--rule); }
+
+  .gate-when {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    color: var(--gate);
+    width: 132px;
+    flex: none;
+    padding-top: 4px;
+  }
+
+  .gate-body { flex: 1 1 300px; display: flex; flex-direction: column; gap: 3px; }
+  .gate-body b { font-size: 15px; font-weight: 600; }
+  .gate-body p { margin: 0; font-size: 14px; color: var(--ink-2); max-width: 62ch; }
+
+  /* ---------- pack list ---------- */
+
+  .packs { display: flex; flex-direction: column; }
+
+  .pack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    padding: 15px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .packs .pack:last-child { border-bottom: 1px solid var(--rule); }
+
+  .pack.is-now { background: var(--lane); margin: 0 -12px; padding-left: 12px; padding-right: 12px; }
+
+  .pack-id { width: 132px; flex: none; display: flex; flex-direction: column; gap: 1px; padding-top: 3px; }
+
+  .pack-id b {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .pack-id span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+  }
+
+  .pack-body { flex: 1 1 320px; display: flex; flex-direction: column; gap: 4px; }
+  .pack-body b { font-size: 15px; font-weight: 600; }
+  .pack-body p { margin: 0; font-size: 14px; color: var(--ink-2); max-width: 62ch; }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gate);
+    border: 1px solid var(--gate);
+    border-radius: 2px;
+    padding: 1px 5px;
+    margin-left: 7px;
+    vertical-align: 2px;
+  }
+  .tag.done { color: var(--t-career); border-color: var(--t-career); }
+  .tag.now  { color: var(--t-fund); border-color: var(--t-fund); }
+
+  /* ---------- two-column note grids ---------- */
+
+  .notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .note {
+    background: var(--card);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .note b { font-size: 14px; font-weight: 600; }
+  .note p { margin: 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.55; }
+
+  /* ---------- closing ---------- */
+
+  .closing {
+    border-left: 3px solid var(--ink);
+    padding: 4px 0 4px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .closing p { margin: 0; max-width: 60ch; }
+  .closing p:first-child { font-family: var(--font-display); font-size: 20px; line-height: 1.35; }
+  .closing p:last-child { font-size: 14.5px; color: var(--ink-2); }
+
+  a { color: inherit; }
+  a:focus-visible, .scroller:focus-visible { outline: 2px solid var(--gate); outline-offset: 2px; }
+
+  @media (max-width: 560px) {
+    .gate-when, .pack-id { width: 100%; }
+    .pack-id { flex-direction: row; align-items: baseline; gap: 10px; }
+  }
+</style>
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">4 August 2026 → 1 February 2027 · 13 packs</div>
+    <h1>Six months: from support to DevOps/SRE</h1>
+    <p class="standfirst">The map for the whole route. The order and the gates are fixed — the content of each pack is assembled from your report on the previous one. You are in pack&nbsp;01.</p>
+    <div class="facts">
+      <div class="fact"><b>13</b><span>two-week packs</span></div>
+      <div class="fact"><b>8</b><span>days in the shift cycle</span></div>
+      <div class="fact"><b>11–13 h</b><span>working time per cycle</span></div>
+      <div class="fact"><b>0 h</b><span>recovery day — by design</span></div>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>How it all lays out over time</h2>
+    <p class="lede">Red marks the dates that do not move. Everything else is a direction, not a schedule.</p>
+
+    <div class="scroller" tabindex="0" role="group" aria-label="Chart: tracks and gates across 13 packs">
+      <div class="roster">
+        <div class="guides" aria-hidden="true"></div>
+
+        <!-- row 1: months -->
+        <div class="month" style="grid-row:1; grid-column:2 / 4;">Aug</div>
+        <div class="month" style="grid-row:1; grid-column:4 / 6;">Sep</div>
+        <div class="month" style="grid-row:1; grid-column:6 / 9;">Oct</div>
+        <div class="month" style="grid-row:1; grid-column:9 / 11;">Nov</div>
+        <div class="month" style="grid-row:1; grid-column:11 / 13;">Dec</div>
+        <div class="month" style="grid-row:1; grid-column:13 / 15;">Jan</div>
+
+        <!-- row 2: pack numbers -->
+        <div class="rail" style="grid-row:2;">pack</div>
+        <div class="num is-done" style="grid-row:2; grid-column:2;">01</div>
+        <div class="num is-now" style="grid-row:2; grid-column:3;">02</div>
+        <div class="num" style="grid-row:2; grid-column:4;">03</div>
+        <div class="num" style="grid-row:2; grid-column:5;">04</div>
+        <div class="num" style="grid-row:2; grid-column:6;">05</div>
+        <div class="num" style="grid-row:2; grid-column:7;">06</div>
+        <div class="num" style="grid-row:2; grid-column:8;">07</div>
+        <div class="num" style="grid-row:2; grid-column:9;">08</div>
+        <div class="num" style="grid-row:2; grid-column:10;">09</div>
+        <div class="num" style="grid-row:2; grid-column:11;">10</div>
+        <div class="num" style="grid-row:2; grid-column:12;">11</div>
+        <div class="num" style="grid-row:2; grid-column:13;">12</div>
+        <div class="num" style="grid-row:2; grid-column:14;">13</div>
+
+        <!-- row 3: gates -->
+        <div class="rail gates" style="grid-row:3;">gates</div>
+        <div class="gatemark" style="grid-row:3; grid-column:5;" title="Mock interview #1 and the first cold application"></div>
+        <div class="gatemark" style="grid-row:3; grid-column:8;" title="Three decisions of month three"></div>
+        <div class="gatemark" style="grid-row:3; grid-column:9;" title="The referral channel opens"></div>
+        <div class="gatemark" style="grid-row:3; grid-column:13;" title="Mock interview #2"></div>
+
+        <!-- row 4: foundation -->
+        <div class="rail" style="grid-row:4;">Foundation</div>
+        <div class="lane" style="grid-row:4;"></div>
+        <div class="bar fund" style="grid-row:4; grid-column:2 / 4; animation-delay:40ms;">Networking</div>
+        <div class="bar fund" style="grid-row:4; grid-column:4 / 7; animation-delay:90ms;">Observability</div>
+        <div class="bar fund" style="grid-row:4; grid-column:10 / 11; animation-delay:140ms;" title="Kubernetes: fundamentals">K8s</div>
+
+        <!-- row 5: practice -->
+        <div class="rail" style="grid-row:5;">Practice</div>
+        <div class="lane" style="grid-row:5;"></div>
+        <div class="bar prac" style="grid-row:5; grid-column:2 / 6; animation-delay:70ms;">CI/CD</div>
+        <div class="bar prac" style="grid-row:5; grid-column:7 / 9; animation-delay:120ms;">Terraform</div>
+        <div class="bar prac" style="grid-row:5; grid-column:9 / 10; animation-delay:160ms;" title="Someone else's legacy and Ansible">Legacy</div>
+        <div class="bar prac" style="grid-row:5; grid-column:11 / 12; animation-delay:200ms;" title="Kubernetes on the lab">K8s</div>
+
+        <!-- row 6: lab -->
+        <div class="rail" style="grid-row:6;">Lab</div>
+        <div class="lane" style="grid-row:6;"></div>
+        <div class="bar stand" style="grid-row:6; grid-column:5 / 6; animation-delay:100ms;" title="Traffic generator">Traffic</div>
+        <div class="bar stand" style="grid-row:6; grid-column:6 / 11; animation-delay:150ms;">Phase 1 — chaos on a leash</div>
+        <div class="bar stand" style="grid-row:6; grid-column:11 / 13; animation-delay:200ms;">Phase 2</div>
+        <div class="bar stand" style="grid-row:6; grid-column:13 / 15; animation-delay:250ms;">Phase 3</div>
+
+        <!-- row 7: career -->
+        <div class="rail" style="grid-row:7;">Career</div>
+        <div class="lane" style="grid-row:7;"></div>
+        <div class="bar career" style="grid-row:7; grid-column:2 / 15; animation-delay:30ms;">Speaking out loud · networking · English — every pack, no exceptions</div>
+
+        <!-- row 8: portfolio -->
+        <div class="rail" style="grid-row:8;">Portfolio</div>
+        <div class="lane" style="grid-row:8;"></div>
+        <div class="bar port" style="grid-row:8; grid-column:12 / 15; animation-delay:260ms;">Assembly &amp; final</div>
+
+        <!-- row 9: tooling -->
+        <div class="rail" style="grid-row:9;">Tooling</div>
+        <div class="lane" style="grid-row:9;"></div>
+        <div class="bar tool" style="grid-row:9; grid-column:2 / 5; animation-delay:60ms;" title="The agent as a working tool">Operator</div>
+        <div class="bar tool" style="grid-row:9; grid-column:5 / 9; animation-delay:110ms;" title="Tuning the agent to your own project">Configurer</div>
+        <div class="bar tool" style="grid-row:9; grid-column:9 / 12; animation-delay:170ms;" title="Your own workflows and rules — if the gate opens">Author</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch fund"></i>Foundation — theory for a specific task</span>
+      <span><i class="swatch prac"></i>Practice — what you do with your hands</span>
+      <span><i class="swatch stand"></i>Lab — it starts breaking on its own</span>
+      <span><i class="swatch career"></i>Career and portfolio</span>
+      <span><i class="swatch tool"></i>Agent harness</span>
+      <span><i class="swatch gate"></i>A date that does not move</span>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Gates</h2>
+    <p class="lede">Five points tied to the calendar, not to readiness. The whole point is that they arrive even when it feels too early.</p>
+
+    <div class="gatelist">
+      <div class="gate-row">
+        <div class="gate-when">Pack 04: 15–28 Sep</div>
+        <div class="gate-body">
+          <b>Mock interview #1. The first cold application goes out</b>
+          <p>Not because you are ready — because a cold application costs nothing. It is calibration: you find out what they actually ask, four months before the answer matters.</p>
+        </div>
+      </div>
+      <div class="gate-row">
+        <div class="gate-when">Pack 07: 27 Oct–9 Nov</div>
+        <div class="gate-body">
+          <b>Three decisions you cannot postpone</b>
+          <p>English — moving or not, and what to do about it. The agent artifact — into the portfolio or not. The harness — you step up a level or you stay. Three months in is the point where you can still change course without losing anything.</p>
+        </div>
+      </div>
+      <div class="gate-row">
+        <div class="gate-when">Pack 08: 10–23 Nov</div>
+        <div class="gate-body">
+          <b>The referral channel opens</b>
+          <p>Not before, and that is deliberate. A referral is spent once: someone you know walks your CV in, and there is no second run at it. You practise where it costs nothing and convert where it counts.</p>
+        </div>
+      </div>
+      <div class="gate-row">
+        <div class="gate-when">Pack 12: 5–18 Jan</div>
+        <div class="gate-body">
+          <b>Mock interview #2</b>
+          <p>Same format as in September. The difference between the two recordings is the measurable result of six months.</p>
+        </div>
+      </div>
+      <div class="gate-row">
+        <div class="gate-when">Every month</div>
+        <div class="gate-body">
+          <b>The closed-laptop talk</b>
+          <p>You explain what you did over the month, with no screen and no notes, and I ask questions. One procedure closes three things at once: interview rehearsal, a check that you understood what you built, and clearance for the next block.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Pack by pack</h2>
+    <p class="lede">The order is not arbitrary: every pack stands on what started working in the one before. Jumping ahead is pointless — there would be nothing to stand on.</p>
+
+    <div class="packs">
+      <div class="pack is-done">
+        <div class="pack-id"><b>01</b><span>4–17 Aug</span></div>
+        <div class="pack-body">
+          <b>Networking for a specific breakage. First pipeline<span class="tag done">completed</span></b>
+          <p>You found the gap yourself. We fix it on a real GitLab and runner failure, not a textbook example — and the first green run shows up along the way.</p>
+        </div>
+      </div>
+      <div class="pack is-now">
+        <div class="pack-id"><b>02</b><span>18–31 Aug</span></div>
+        <div class="pack-body">
+          <b>Pipeline end to end: build → registry → deploy<span class="tag now">in progress</span></b>
+          <p>Close the delivery loop. From this point you do not have a lab, you have a small real system — and you can talk about it in a different tone.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>03</b><span>1–14 Sep</span></div>
+        <div class="pack-body">
+          <b>Prometheus from scratch. Metrics for your own services</b>
+          <p>You have Loki — that is logs. There are no metrics. Without them there are no meaningful alerts, no SLOs, and no conversation about reliability in an interview.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>04</b><span>15–28 Sep</span></div>
+        <div class="pack-body">
+          <b>Alerts in Telegram. First SLO. Traffic generator<span class="tag">gate</span></b>
+          <p>On-call has to be felt. A dashboard you have to remember to open is not on-call. This is also when the lab first starts living without you.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>05</b><span>29 Sep–12 Oct</span></div>
+        <div class="pack-body">
+          <b>The lab starts breaking on its own. First two postmortems</b>
+          <p>Here you stop building the system and start operating it. Those are different professions, and hiring is for the second one. For now it only breaks on your days off — the genuinely inconvenient part comes later.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>06</b><span>13–26 Oct</span></div>
+        <div class="pack-body">
+          <b>Terraform. First module — by hand</b>
+          <p>Infrastructure as code is the second most common interview question after CI/CD. You write the first module yourself, without the agent: what you wrote by hand once, you can explain.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>07</b><span>27 Oct–9 Nov</span></div>
+        <div class="pack-body">
+          <b>Terraform: modules, remote state, plan/apply in CI<span class="tag">gate</span></b>
+          <p>The difference between “I have touched Terraform” and “I can use it” is exactly those three things. The three decisions of month three land here too.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>08</b><span>10–23 Nov</span></div>
+        <div class="pack-body">
+          <b>Someone else's legacy: you take what you did not build. Ansible lands here too<span class="tag">gate</span></b>
+          <p>At work nobody hands you a blank page. They hand you someone else's undocumented system and ask you not to break it. That skill does not develop on your own projects — so we will arrange it on purpose.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>09</b><span>24 Nov–7 Dec</span></div>
+        <div class="pack-body">
+          <b>Kubernetes: fundamentals, kind/k3s locally. Manifests by hand</b>
+          <p>K8s is in almost every job ad, but it comes second to last on purpose: without networking, CI/CD and monitoring it turns into a set of incantations you have no way to check.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>10</b><span>8–21 Dec</span></div>
+        <div class="pack-body">
+          <b>K8s: Helm, ingress, probes. You migrate one service</b>
+          <p>One real service moved across in full is worth ten tutorials. At the same time the lab moves into phase two — it can now break at night as well.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>11</b><span>22 Dec–4 Jan</span></div>
+        <div class="pack-body">
+          <b>Planned unload. Portfolio and README in English</b>
+          <p>Not “I will rest if it works out”. The unload is written in ahead of time — that is how you get a person back after the holidays instead of losing them entirely. Light work: tidying up what already exists.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>12</b><span>5–18 Jan</span></div>
+        <div class="pack-body">
+          <b>The lab breaks whenever it likes. Error budget<span class="tag">gate</span></b>
+          <p>Now an incident can land mid-shift and you physically cannot respond. That is the lesson: what a system needs so that a three-hour delay is not a catastrophe. This is where the lab starts teaching design rather than debugging.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>13</b><span>19 Jan–1 Feb</span></div>
+        <div class="pack-body">
+          <b>Portfolio final: recordings, diagrams, assembling the story</b>
+          <p>Everything assembles around one claim: “a support engineer who already thinks like an SRE”. It is true, it is hard to fake, and there are not many of them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>What does not change in any pack</h2>
+    <div class="notes">
+      <div class="note">
+        <b>Speaking out loud — about an hour</b>
+        <p>In Russian first, then every second time in English. The cheapest and highest-return task in the whole plan: you have already lost an interview for reasons other than knowledge.</p>
+      </div>
+      <div class="note">
+        <b>A “why” on every task</b>
+        <p>If the “why” block did not convince you, say so straight. This is not a whim: without an answer to that question you will drop the plan, and that has already happened.</p>
+      </div>
+      <div class="note">
+        <b>The named minimum</b>
+        <p>Two or three tasks that survive when the cycle falls apart — work, health, life. Do only those and the pack is not failed. Two such packs in a row and we cut the load instead of pushing.</p>
+      </div>
+      <div class="note">
+        <b>The first of each kind — by hand</b>
+        <p>The agent explains, checks and breaks. The first Dockerfile, pipeline, module, manifest and all the debugging are yours. Otherwise you end up with a working lab and zero understanding.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>What is not here — and why that is a decision, not an oversight</h2>
+    <div class="notes">
+      <div class="note">
+        <b>Go and programming</b>
+        <p>You said it does not interest you. Without interest you will not do it, and a junior DevOps does not need it. Bash — only for a specific task.</p>
+      </div>
+      <div class="note">
+        <b>Certifications are not booked</b>
+        <p>We decide on the evidence. If it turns out they really do get career changers past the HR filter — Terraform Associate after pack 07, CKA after 10. If not, we spend neither the money nor the month.</p>
+      </div>
+      <div class="note">
+        <b>GitOps, service mesh, platform engineering</b>
+        <p>Sounds impressive and does not fit. In 11–13 hours per cycle it competes with networking and monitoring, which you do not have yet. It loses.</p>
+      </div>
+      <div class="note">
+        <b>Nothing from scratch</b>
+        <p>Everything grows out of your lab. You already have one; building a second spends the only genuinely scarce resource.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="closing">
+    <p>This is a skeleton, not a schedule. The order and the gates are fixed — the content of each pack is assembled from your report.</p>
+    <p>Too much volume — we cut. Too easy — we add. Both answers are right, and both need to be said out loud.</p>
+  </div>
+
+</div>
+</body>
+</html>

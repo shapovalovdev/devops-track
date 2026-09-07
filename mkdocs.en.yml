@@ -1,0 +1,114 @@
+site_name: DevOps Track
+site_description: Sprint Materials — from Support to DevOps/SRE
+site_url: https://shapovalovdev.github.io/devops-track/en/
+
+site_author: ""
+copyright: ""
+
+docs_dir: docs-en
+site_dir: _build/en
+
+theme:
+  name: material
+  custom_dir: overrides
+  language: en
+  font: false
+  features:
+    - navigation.instant
+    - navigation.top
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+extra:
+  alternate:
+    - name: Русский
+      link: /devops-track/
+      lang: ru
+    - name: English
+      link: /devops-track/en/
+      lang: en
+
+plugins:
+  - search:
+      lang:
+        - en
+        - ru
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - 🏠 Dashboard: index.md
+  - 🟡 Active Sprint (Pack 02):
+      - Sprint Hub: pack-02/index.md
+      - Tasks: pack-02/tasks.md
+      - Checklist: pack-02/checklist.md
+      - Fundamentals & Why: pack-02/fundamentals.md
+      - Theory: pack-02/theory.md
+      - Self-Check Rubric: pack-02/rubric.md
+      - Interview Questions: pack-02/questions.md
+      - Study Materials: pack-02/materials.md
+      - Question Bank: pack-02/bank.md
+  - 🟢 Archive (Pack 01):
+      - Sprint Hub: pack-01/index.md
+      - Tasks: pack-01/tasks.md
+      - Checklist: pack-01/checklist.md
+      - Fundamentals & Why: pack-01/fundamentals.md
+      - Theory: pack-01/theory.md
+      - Self-Check Rubric: pack-01/rubric.md
+      - Interview Questions: pack-01/questions.md
+      - Study Materials: pack-01/materials.md
+      - Question Bank: pack-01/bank.md
+  - ⚪ September Plan (Pack 03):
+      - Sprint Hub: pack-03/index.md
+      - Tasks: pack-03/tasks.md
+      - Checklist: pack-03/checklist.md
+      - Fundamentals & Why: pack-03/fundamentals.md
+      - Theory: pack-03/theory.md
+      - Self-Check Rubric: pack-03/rubric.md
+      - Interview Questions: pack-03/questions.md
+      - Study Materials: pack-03/materials.md
+      - Question Bank: pack-03/bank.md
+  - 🗺️ Curriculum & Roadmap:
+      - Track Curriculum: curriculum.md
+      - Visual Roadmap: roadmap.html
+
+not_in_nav: |
+  roadmap.html

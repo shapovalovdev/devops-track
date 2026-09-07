@@ -1,0 +1,79 @@
+# Build and deploy the site to GitHub Pages.
+#
+# This file is pushed into the public repo by site/publish.sh. Edit it here,
+# not there — the public repo is overwritten on every publish.
+#
+# Why the build happens here and not on a laptop: the same reason pack 01
+# gives Daniil. A build on the author's machine depends on what happens to be
+# installed there. This one runs from a pinned requirements.txt on a clean
+# runner, so what ships is a function of what's in the repo and nothing else.
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time. A queued run is fine; two runs racing to publish
+# different commits is not.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # --strict turns a broken internal link into a failed build rather than
+      # a warning nobody reads.
+      #
+      # Russian first, then English into _build/en. Order is load-bearing:
+      # mkdocs cleans its site_dir, and _build/en lives inside _build, so
+      # building Russian second would delete the English edition.
+      - run: mkdocs build --strict
+      - run: mkdocs build -f mkdocs.en.yml --strict
+
+      # The gate. Russian search fails silently on this stack — the index
+      # builds, the box appears, and Cyrillic queries return nothing. Without
+      # this step the failure ships and is discovered by the one reader, or
+      # never. See the comment in mkdocs.yml for the mechanism.
+      - name: Verify search works in both editions
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+          python3 test_search.py
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          # The action's default is 10 minutes, and a deploy here has sat in
+          # GitHub's `deployment_queued` state for longer than that and failed
+          # a build whose content was fine. Nothing to fix on our side — the
+          # queue is theirs — so give it room rather than treating a slow
+          # queue as a broken site.
+          timeout: 1800000

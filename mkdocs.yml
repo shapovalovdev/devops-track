@@ -1,0 +1,116 @@
+site_name: DevOps Track
+site_description: Материалы паков — от поддержки к DevOps/SRE
+site_url: https://shapovalovdev.github.io/devops-track/
+
+# Issue #20: unlisted, never linked, not indexed. This is not access control —
+# GitHub Pages serves to anyone with the URL — it only reduces discoverability.
+site_author: ""
+copyright: ""
+
+docs_dir: docs
+site_dir: _build
+
+theme:
+  name: material
+  custom_dir: overrides   # adds the noindex meta tag to every page — see overrides/main.html
+  language: ru
+  font: false          # no Google Fonts request; system stacks render Cyrillic fine
+  features:
+    - navigation.instant
+    - navigation.top
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Тёмная тема
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Светлая тема
+
+extra:
+  alternate:
+    - name: Русский
+      link: /devops-track/
+      lang: ru
+    - name: English
+      link: /devops-track/en/
+      lang: en
+
+plugins:
+  - search:
+      lang:
+        - ru
+        - en
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - 🏠 Дашборд: index.md
+  - 🟡 Текущий спринт (Пак 02):
+      - Обзор спринта: pack-02/index.md
+      - Задачи: pack-02/tasks.md
+      - Чеклист: pack-02/checklist.md
+      - Почему всё так: pack-02/fundamentals.md
+      - Теория: pack-02/theory.md
+      - Самопроверка: pack-02/rubric.md
+      - Вопросы с собеседований: pack-02/questions.md
+      - Материалы: pack-02/materials.md
+      - Банк вопросов: pack-02/bank.md
+  - 🟢 Архив (Пак 01):
+      - Обзор спринта: pack-01/index.md
+      - Задачи: pack-01/tasks.md
+      - Чеклист: pack-01/checklist.md
+      - Почему всё так: pack-01/fundamentals.md
+      - Теория: pack-01/theory.md
+      - Самопроверка: pack-01/rubric.md
+      - Вопросы с собеседований: pack-01/questions.md
+      - Материалы: pack-01/materials.md
+      - Банк вопросов: pack-01/bank.md
+  - ⚪ План на сентябрь (Пак 03):
+      - Обзор спринта: pack-03/index.md
+      - Задачи: pack-03/tasks.md
+      - Чеклист: pack-03/checklist.md
+      - Почему всё так: pack-03/fundamentals.md
+      - Теория: pack-03/theory.md
+      - Самопроверка: pack-03/rubric.md
+      - Вопросы с собеседований: pack-03/questions.md
+      - Материалы: pack-03/materials.md
+      - Банк вопросов: pack-03/bank.md
+  - 🗺️ Программа и карта:
+      - Программа трека: curriculum.md
+      - Карта полугода: roadmap.html
+
+not_in_nav: |
+  roadmap.html

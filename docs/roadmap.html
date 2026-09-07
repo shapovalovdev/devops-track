@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Полгода: от поддержки к DevOps/SRE</title>
+<style>
+  :root {
+    --paper:   #EEF0F3;
+    --card:    #FAFBFC;
+    --ink:     #16202B;
+    --ink-2:   #47546A;
+    --ink-3:   #78849A;
+    --rule:    #D2D8E1;
+    --rule-2:  #E1E6EC;
+    --lane:    #E5E9EF;
+
+    --t-fund:   #2E6C8A;
+    --t-prac:   #8A5A2E;
+    --t-stand:  #96702A;
+    --t-career: #4A7A48;
+    --t-tool:   #5D6B7A;
+    --gate:     #B23A2B;
+
+    --bar-text: #FFFFFF;
+
+    --font-display: Cambria, "Noto Serif", "PT Serif", Georgia, "Times New Roman", serif;
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, "Roboto Mono", monospace;
+
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:   #12171D;
+      --card:    #191F27;
+      --ink:     #E4E9EF;
+      --ink-2:   #A3AFBE;
+      --ink-3:   #77828F;
+      --rule:    #2C343E;
+      --rule-2:  #232A33;
+      --lane:    #1E252E;
+
+      --t-fund:   #3A87A8;
+      --t-prac:   #A66E38;
+      --t-stand:  #B08733;
+      --t-career: #5C9459;
+      --t-tool:   #71818F;
+      --gate:     #D9604D;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:   #12171D;
+    --card:    #191F27;
+    --ink:     #E4E9EF;
+    --ink-2:   #A3AFBE;
+    --ink-3:   #77828F;
+    --rule:    #2C343E;
+    --rule-2:  #232A33;
+    --lane:    #1E252E;
+
+    --t-fund:   #3A87A8;
+    --t-prac:   #A66E38;
+    --t-stand:  #B08733;
+    --t-career: #5C9459;
+    --t-tool:   #71818F;
+    --gate:     #D9604D;
+  }
+
+  :root[data-theme="light"] {
+    --paper:   #EEF0F3;
+    --card:    #FAFBFC;
+    --ink:     #16202B;
+    --ink-2:   #47546A;
+    --ink-3:   #78849A;
+    --rule:    #D2D8E1;
+    --rule-2:  #E1E6EC;
+    --lane:    #E5E9EF;
+
+    --t-fund:   #2E6C8A;
+    --t-prac:   #8A5A2E;
+    --t-stand:  #96702A;
+    --t-career: #4A7A48;
+    --t-tool:   #5D6B7A;
+    --gate:     #B23A2B;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 20px 88px;
+    display: flex;
+    flex-direction: column;
+    gap: 52px;
+  }
+
+  /* ---------- header ---------- */
+
+  .masthead { display: flex; flex-direction: column; gap: 14px; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .masthead h1 {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 5.6vw, 46px);
+    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .standfirst {
+    font-size: 17px;
+    color: var(--ink-2);
+    max-width: 62ch;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 30px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .fact { display: flex; flex-direction: column; gap: 1px; padding: 6px 0; }
+
+  .fact b {
+    font-family: var(--font-mono);
+    font-size: 19px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .fact span { font-size: 12px; color: var(--ink-3); }
+
+  /* ---------- section frame ---------- */
+
+  .block { display: flex; flex-direction: column; gap: 18px; }
+
+  .block > h2 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+    text-wrap: balance;
+  }
+
+  .lede { font-size: 15px; color: var(--ink-2); max-width: 64ch; }
+
+  /* ---------- roster chart ---------- */
+
+  .scroller {
+    overflow-x: auto;
+    padding-bottom: 6px;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    border-radius: 3px;
+  }
+
+  .roster {
+    display: grid;
+    grid-template-columns: 116px repeat(13, minmax(48px, 1fr));
+    align-items: center;
+    row-gap: 7px;
+    min-width: 800px;
+    padding: 14px 14px 16px;
+  }
+
+  .guides {
+    grid-column: 2 / -1;
+    grid-row: 1 / -1;
+    background-image: repeating-linear-gradient(
+      to right, var(--rule-2) 0 1px, transparent 1px calc(100% / 13)
+    );
+  }
+
+  .month {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    text-align: center;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-2);
+    text-align: center;
+    padding: 3px 0;
+  }
+
+  .num.is-now {
+    color: var(--paper);
+    background: var(--ink);
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  .num.is-done {
+    color: var(--t-career);
+    font-weight: 600;
+  }
+
+
+  .rail {
+    grid-column: 1;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    padding-right: 12px;
+    text-align: right;
+  }
+
+  .lane {
+    grid-column: 2 / -1;
+    height: 26px;
+    background: var(--lane);
+    border-radius: 2px;
+  }
+
+  .bar {
+    height: 26px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--bar-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 2px;
+    transform-origin: left center;
+    animation: grow 480ms cubic-bezier(0.22, 0.9, 0.3, 1) backwards;
+  }
+
+  @keyframes grow { from { transform: scaleX(0.02); opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar { animation: none; }
+  }
+
+  .bar.fund   { background: var(--t-fund); }
+  .bar.prac   { background: var(--t-prac); }
+  .bar.stand  { background: var(--t-stand); }
+  .bar.tool   { background: var(--t-tool); }
+  .bar.port   { background: var(--t-career); }
+
+  .bar.career {
+    background: color-mix(in srgb, var(--t-career) 20%, transparent);
+    border: 1px solid var(--t-career);
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .gatemark {
+    justify-self: center;
+    width: 11px;
+    height: 11px;
+    background: var(--gate);
+    transform: rotate(45deg);
+    border-radius: 1px;
+  }
+
+  .rail.gates { color: var(--gate); }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+
+  .legend span { display: flex; align-items: center; gap: 7px; }
+
+  .swatch { width: 11px; height: 11px; border-radius: 2px; flex: none; }
+  .swatch.fund { background: var(--t-fund); }
+  .swatch.prac { background: var(--t-prac); }
+  .swatch.stand { background: var(--t-stand); }
+  .swatch.career { background: var(--t-career); }
+  .swatch.tool { background: var(--t-tool); }
+  .swatch.gate { background: var(--gate); transform: rotate(45deg); }
+
+  /* ---------- gates ---------- */
+
+  .gatelist { display: flex; flex-direction: column; gap: 0; }
+
+  .gate-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    padding: 15px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .gate-row:last-child { border-bottom: 1px solid var(--rule); }
+
+  .gate-when {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    color: var(--gate);
+    width: 132px;
+    flex: none;
+    padding-top: 4px;
+  }
+
+  .gate-body { flex: 1 1 300px; display: flex; flex-direction: column; gap: 3px; }
+  .gate-body b { font-size: 15px; font-weight: 600; }
+  .gate-body p { margin: 0; font-size: 14px; color: var(--ink-2); max-width: 62ch; }
+
+  /* ---------- pack list ---------- */
+
+  .packs { display: flex; flex-direction: column; }
+
+  .pack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    padding: 15px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .packs .pack:last-child { border-bottom: 1px solid var(--rule); }
+
+  .pack.is-now { background: var(--lane); margin: 0 -12px; padding-left: 12px; padding-right: 12px; }
+
+  .pack-id { width: 132px; flex: none; display: flex; flex-direction: column; gap: 1px; padding-top: 3px; }
+
+  .pack-id b {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .pack-id span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+  }
+
+  .pack-body { flex: 1 1 320px; display: flex; flex-direction: column; gap: 4px; }
+  .pack-body b { font-size: 15px; font-weight: 600; }
+  .pack-body p { margin: 0; font-size: 14px; color: var(--ink-2); max-width: 62ch; }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gate);
+    border: 1px solid var(--gate);
+    border-radius: 2px;
+    padding: 1px 5px;
+    margin-left: 7px;
+    vertical-align: 2px;
+  }
+  .tag.done { color: var(--t-career); border-color: var(--t-career); }
+  .tag.now  { color: var(--t-fund); border-color: var(--t-fund); }
+
+  /* ---------- two-column note grids ---------- */
+
+  .notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .note {
+    background: var(--card);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .note b { font-size: 14px; font-weight: 600; }
+  .note p { margin: 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.55; }
+
+  /* ---------- closing ---------- */
+
+  .closing {
+    border-left: 3px solid var(--ink);
+    padding: 4px 0 4px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .closing p { margin: 0; max-width: 60ch; }
+  .closing p:first-child { font-family: var(--font-display); font-size: 20px; line-height: 1.35; }
+  .closing p:last-child { font-size: 14.5px; color: var(--ink-2); }
+
+  a { color: inherit; }
+  a:focus-visible, .scroller:focus-visible { outline: 2px solid var(--gate); outline-offset: 2px; }
+
+  @media (max-width: 560px) {
+    .gate-when, .pack-id { width: 100%; }
+    .pack-id { flex-direction: row; align-items: baseline; gap: 10px; }
+  }
+</style>
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">4 августа 2026 → 1 февраля 2027 · 13 паков</div>
+    <h1>Полгода: от поддержки к DevOps/SRE</h1>
+    <p class="standfirst">Карта на весь путь. Порядок и вехи зафиксированы — содержание каждого пака собирается из твоего отчёта за предыдущий. Ты в паке&nbsp;01.</p>
+    <div class="facts">
+      <div class="fact"><b>13</b><span>паков по две недели</span></div>
+      <div class="fact"><b>8</b><span>дней в цикле смен</span></div>
+      <div class="fact"><b>11–13 ч</b><span>рабочего времени за цикл</span></div>
+      <div class="fact"><b>0 ч</b><span>отсыпной — по плану</span></div>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>Как всё раскладывается по времени</h2>
+    <p class="lede">Красным отмечены даты, которые не двигаются. Всё остальное — направление, а не расписание.</p>
+
+    <div class="scroller" tabindex="0" role="group" aria-label="Диаграмма: треки и вехи по 13 пакам">
+      <div class="roster">
+        <div class="guides" aria-hidden="true"></div>
+
+        <!-- row 1: months -->
+        <div class="month" style="grid-row:1; grid-column:2 / 4;">Авг</div>
+        <div class="month" style="grid-row:1; grid-column:4 / 6;">Сен</div>
+        <div class="month" style="grid-row:1; grid-column:6 / 9;">Окт</div>
+        <div class="month" style="grid-row:1; grid-column:9 / 11;">Ноя</div>
+        <div class="month" style="grid-row:1; grid-column:11 / 13;">Дек</div>
+        <div class="month" style="grid-row:1; grid-column:13 / 15;">Янв</div>
+
+        <!-- row 2: pack numbers -->
+        <div class="rail" style="grid-row:2;">пак</div>
+        <div class="num is-done" style="grid-row:2; grid-column:2;">01</div>
+        <div class="num is-now" style="grid-row:2; grid-column:3;">02</div>
+        <div class="num" style="grid-row:2; grid-column:4;">03</div>
+        <div class="num" style="grid-row:2; grid-column:5;">04</div>
+        <div class="num" style="grid-row:2; grid-column:6;">05</div>
+        <div class="num" style="grid-row:2; grid-column:7;">06</div>
+        <div class="num" style="grid-row:2; grid-column:8;">07</div>
+        <div class="num" style="grid-row:2; grid-column:9;">08</div>
+        <div class="num" style="grid-row:2; grid-column:10;">09</div>
+        <div class="num" style="grid-row:2; grid-column:11;">10</div>
+        <div class="num" style="grid-row:2; grid-column:12;">11</div>
+        <div class="num" style="grid-row:2; grid-column:13;">12</div>
+        <div class="num" style="grid-row:2; grid-column:14;">13</div>
+
+        <!-- row 3: gates -->
+        <div class="rail gates" style="grid-row:3;">вехи</div>
+        <div class="gatemark" style="grid-row:3; grid-column:5;" title="Мок-собес №1 и первый холодный отклик"></div>
+        <div class="gatemark" style="grid-row:3; grid-column:8;" title="Три решения третьего месяца"></div>
+        <div class="gatemark" style="grid-row:3; grid-column:9;" title="Открывается канал рекомендаций"></div>
+        <div class="gatemark" style="grid-row:3; grid-column:13;" title="Мок-собес №2"></div>
+
+        <!-- row 4: фундамент -->
+        <div class="rail" style="grid-row:4;">Фундамент</div>
+        <div class="lane" style="grid-row:4;"></div>
+        <div class="bar fund" style="grid-row:4; grid-column:2 / 4; animation-delay:40ms;">Сети</div>
+        <div class="bar fund" style="grid-row:4; grid-column:4 / 7; animation-delay:90ms;">Наблюдаемость</div>
+        <div class="bar fund" style="grid-row:4; grid-column:10 / 11; animation-delay:140ms;" title="Kubernetes: основы">K8s</div>
+
+        <!-- row 5: практика -->
+        <div class="rail" style="grid-row:5;">Практика</div>
+        <div class="lane" style="grid-row:5;"></div>
+        <div class="bar prac" style="grid-row:5; grid-column:2 / 6; animation-delay:70ms;">CI/CD</div>
+        <div class="bar prac" style="grid-row:5; grid-column:7 / 9; animation-delay:120ms;">Terraform</div>
+        <div class="bar prac" style="grid-row:5; grid-column:9 / 10; animation-delay:160ms;" title="Чужое legacy и Ansible">Legacy</div>
+        <div class="bar prac" style="grid-row:5; grid-column:11 / 12; animation-delay:200ms;" title="Kubernetes на стенде">K8s</div>
+
+        <!-- row 6: стенд -->
+        <div class="rail" style="grid-row:6;">Стенд</div>
+        <div class="lane" style="grid-row:6;"></div>
+        <div class="bar stand" style="grid-row:6; grid-column:5 / 6; animation-delay:100ms;" title="Генератор трафика">Трафик</div>
+        <div class="bar stand" style="grid-row:6; grid-column:6 / 11; animation-delay:150ms;">Фаза 1 — хаос на поводке</div>
+        <div class="bar stand" style="grid-row:6; grid-column:11 / 13; animation-delay:200ms;">Фаза 2</div>
+        <div class="bar stand" style="grid-row:6; grid-column:13 / 15; animation-delay:250ms;">Фаза 3</div>
+
+        <!-- row 7: карьера -->
+        <div class="rail" style="grid-row:7;">Карьера</div>
+        <div class="lane" style="grid-row:7;"></div>
+        <div class="bar career" style="grid-row:7; grid-column:2 / 15; animation-delay:30ms;">Проговаривание вслух · нетворкинг · английский — каждый пак, без исключений</div>
+
+        <!-- row 8: портфолио -->
+        <div class="rail" style="grid-row:8;">Портфолио</div>
+        <div class="lane" style="grid-row:8;"></div>
+        <div class="bar port" style="grid-row:8; grid-column:12 / 15; animation-delay:260ms;">Сборка и финал</div>
+
+        <!-- row 9: инструмент -->
+        <div class="rail" style="grid-row:9;">Инструмент</div>
+        <div class="lane" style="grid-row:9;"></div>
+        <div class="bar tool" style="grid-row:9; grid-column:2 / 5; animation-delay:60ms;" title="Агент как рабочий инструмент">Оператор</div>
+        <div class="bar tool" style="grid-row:9; grid-column:5 / 9; animation-delay:110ms;" title="Настройка агента под свой проект">Настройщик</div>
+        <div class="bar tool" style="grid-row:9; grid-column:9 / 12; animation-delay:170ms;" title="Свои сценарии и правила — если откроется гейт">Автор</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch fund"></i>Фундамент — теория под конкретную задачу</span>
+      <span><i class="swatch prac"></i>Практика — то, что делаешь руками</span>
+      <span><i class="swatch stand"></i>Стенд — он начинает ломаться сам</span>
+      <span><i class="swatch career"></i>Карьера и портфолио</span>
+      <span><i class="swatch tool"></i>Агентный харнесс</span>
+      <span><i class="swatch gate"></i>Дата, которая не двигается</span>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Вехи</h2>
+    <p class="lede">Пять точек, привязанных к календарю, а не к готовности. Их смысл в том, что они наступают, даже если кажется, что рано.</p>
+
+    <div class="gatelist">
+      <div class="gate-row">
+        <div class="gate-when">Пак 04 · 15–28 сен</div>
+        <div class="gate-body">
+          <b>Мок-собес №1. Уходит первый холодный отклик</b>
+          <p>Не потому что ты готов — а потому что холодный отклик ничего не стоит. Это калибровка: ты увидишь, о чём на самом деле спрашивают, за четыре месяца до того, как ответ станет важен.</p>
+        </div>
+      </div>
+      <div class="gate-row">
+        <div class="gate-when">Пак 07 · 27 окт–9 ноя</div>
+        <div class="gate-body">
+          <b>Три решения, которые нельзя отложить</b>
+          <p>Английский — идёт или нет, и что с этим делать. Агентный артефакт — попадает в портфолио или нет. Харнесс — переходишь на следующую ступень или остаёшься. Три месяца — та точка, где ещё можно свернуть без потерь.</p>
+        </div>
+      </div>
+      <div class="gate-row">
+        <div class="gate-when">Пак 08 · 10–23 ноя</div>
+        <div class="gate-body">
+          <b>Открывается канал рекомендаций</b>
+          <p>Раньше — нет, и это принципиально. Рекомендацию тратят один раз: знакомый заносит твоё резюме, и второго такого захода не будет. Тренируешься там, где не жалко, конвертируешь там, где важно.</p>
+        </div>
+      </div>
+      <div class="gate-row">
+        <div class="gate-when">Пак 12 · 5–18 янв</div>
+        <div class="gate-body">
+          <b>Мок-собес №2</b>
+          <p>Тот же формат, что в сентябре. Разница между двумя записями и есть измеримый результат полугода.</p>
+        </div>
+      </div>
+      <div class="gate-row">
+        <div class="gate-when">Каждый месяц</div>
+        <div class="gate-body">
+          <b>Рассказ с закрытым ноутбуком</b>
+          <p>Ты объясняешь, что сделал за месяц, без экрана и заметок, я задаю вопросы. Одна процедура закрывает три задачи сразу: репетиция собеседования, проверка что ты понял то, что построил, и допуск к следующему блоку.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Пак за паком</h2>
+    <p class="lede">Порядок не случайный: каждый следующий пак опирается на то, что заработало в предыдущем. Поэтому перепрыгивать вперёд бессмысленно — не на что будет ставить.</p>
+
+    <div class="packs">
+      <div class="pack is-done">
+        <div class="pack-id"><b>01</b><span>4–17 авг</span></div>
+        <div class="pack-body">
+          <b>Сети под конкретную поломку. Первый pipeline<span class="tag done">выполнено</span></b>
+          <p>Пробел ты нашёл сам. Чиним на настоящей поломке GitLab и runner-а, а не на учебном примере — заодно появляется первый зелёный прогон.</p>
+        </div>
+      </div>
+      <div class="pack is-now">
+        <div class="pack-id"><b>02</b><span>18–31 авг</span></div>
+        <div class="pack-body">
+          <b>Pipeline до конца: сборка → registry → деплой<span class="tag now">в процессе</span></b>
+          <p>Замкнуть контур доставки. С этого момента у тебя не стенд, а маленькая настоящая система — и рассказывать про неё можно другим тоном.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>03</b><span>1–14 сен</span></div>
+        <div class="pack-body">
+          <b>Prometheus с нуля. Метрики своих сервисов</b>
+          <p>У тебя есть Loki — это логи. Метрик нет. Без них не бывает ни осмысленных алертов, ни SLO, ни разговора про надёжность на собеседовании.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>04</b><span>15–28 сен</span></div>
+        <div class="pack-body">
+          <b>Алерты в Telegram. Первый SLO. Генератор трафика<span class="tag">веха</span></b>
+          <p>Дежурство надо чувствовать. Дашборд, который нужно не забыть открыть, — это не дежурство. Тогда же стенд впервые начинает жить без тебя.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>05</b><span>29 сен–12 окт</span></div>
+        <div class="pack-body">
+          <b>Стенд начинает ломаться сам. Первые два постмортема</b>
+          <p>Здесь ты перестаёшь строить систему и начинаешь её эксплуатировать. Это разные профессии, и нанимают на вторую. Пока ломается только в твои выходные — по-настоящему неудобно станет позже.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>06</b><span>13–26 окт</span></div>
+        <div class="pack-body">
+          <b>Terraform. Первый модуль — своими руками</b>
+          <p>Инфраструктура кодом — второй по частоте вопрос на собеседовании после CI/CD. Первый модуль пишешь сам, без агента: то, что ты написал руками один раз, ты сможешь объяснить.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>07</b><span>27 окт–9 ноя</span></div>
+        <div class="pack-body">
+          <b>Terraform: модули, remote state, plan/apply в CI<span class="tag">веха</span></b>
+          <p>Разница между «я трогал терраформ» и «я умею им пользоваться» — ровно в этих трёх вещах. Здесь же три решения третьего месяца.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>08</b><span>10–23 ноя</span></div>
+        <div class="pack-body">
+          <b>Чужое legacy: берёшь то, что строил не ты. Здесь же Ansible<span class="tag">веха</span></b>
+          <p>На работе тебе не дадут чистый лист. Дадут чужое, недокументированное, и попросят не сломать. Этот навык не тренируется на своих проектах — поэтому мы его подстроим специально.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>09</b><span>24 ноя–7 дек</span></div>
+        <div class="pack-body">
+          <b>Kubernetes: основы, kind/k3s локально. Манифесты руками</b>
+          <p>K8s стоит в вакансиях почти везде, но идёт он предпоследним осознанно: без сетей, CI/CD и мониторинга он превращается в набор заклинаний, которые нечем проверить.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>10</b><span>8–21 дек</span></div>
+        <div class="pack-body">
+          <b>K8s: Helm, ingress, probes. Переносишь один сервис</b>
+          <p>Один настоящий сервис, перевезённый целиком, стоит десяти туториалов. Стенд одновременно переходит во вторую фазу — ломаться теперь может и ночью.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>11</b><span>22 дек–4 янв</span></div>
+        <div class="pack-body">
+          <b>Разгрузка по плану. Портфолио и README на английском</b>
+          <p>Не «отдохну, если получится». Разгрузка вписана заранее — так делают, чтобы после праздников человек вернулся, а не выпал совсем. Лёгкая работа: привести в порядок то, что уже есть.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>12</b><span>5–18 янв</span></div>
+        <div class="pack-body">
+          <b>Стенд ломается когда захочет. Error budget<span class="tag">веха</span></b>
+          <p>Теперь авария может прийти в середине смены, и ты физически не ответишь. Это и есть урок: что должно быть в системе, чтобы задержка в три часа не была катастрофой. Здесь лаборатория начинает учить проектированию, а не отладке.</p>
+        </div>
+      </div>
+      <div class="pack">
+        <div class="pack-id"><b>13</b><span>19 янв–1 фев</span></div>
+        <div class="pack-body">
+          <b>Финал портфолио: записи, схемы, сборка рассказа</b>
+          <p>Всё собирается вокруг одного утверждения: «инженер поддержки, который уже мыслит как SRE». Это правда, это трудно подделать, и таких мало.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Что не меняется ни в одном паке</h2>
+    <div class="notes">
+      <div class="note">
+        <b>Проговаривание вслух — около часа</b>
+        <p>Сначала по-русски, потом каждый второй раз по-английски. Самая дешёвая и самая доходная задача во всём плане: ты уже терял собеседование не из-за знаний.</p>
+      </div>
+      <div class="note">
+        <b>«Зачем» у каждой задачи</b>
+        <p>Если блок «зачем» тебя не убедил — говори прямо. Это не каприз: без ответа на этот вопрос ты бросишь план, и это уже происходило.</p>
+      </div>
+      <div class="note">
+        <b>Названный минимум</b>
+        <p>Две-три задачи, которые остаются, если цикл развалился — работа, здоровье, жизнь. Сделал только их — пак не провален. Два таких пака подряд — уменьшаем нагрузку, а не давим.</p>
+      </div>
+      <div class="note">
+        <b>Первое каждого типа — руками</b>
+        <p>Агент объясняет, проверяет и ломает. Первый Dockerfile, pipeline, модуль, манифест и вся отладка — твои. Иначе получится работающий стенд и ноль понимания.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Чего здесь нет — и почему это решение, а не забывчивость</h2>
+    <div class="notes">
+      <div class="note">
+        <b>Go и программирование</b>
+        <p>Ты сказал, что тебе это неинтересно. Без интереса ты это не сделаешь, а DevOps-джуну оно и не нужно. Bash — только под конкретную задачу.</p>
+      </div>
+      <div class="note">
+        <b>Сертификаты не забронированы</b>
+        <p>Решим по факту. Если окажется, что они реально помогают пройти HR-фильтр тем, кто меняет профессию, — Terraform Associate после пака 07, CKA после 10. Если нет — не тратим ни денег, ни месяца.</p>
+      </div>
+      <div class="note">
+        <b>GitOps, service mesh, платформенная инженерия</b>
+        <p>Звучит солидно и не влезает. В 11–13 часов за цикл это конкурирует с сетями и мониторингом, которых пока нет. Проигрывает.</p>
+      </div>
+      <div class="note">
+        <b>Ничего с нуля</b>
+        <p>Всё растёт из твоего стенда. У тебя он уже есть; строить второй — трата единственного по-настоящему дефицитного ресурса.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="closing">
+    <p>Это скелет, а не расписание. Зафиксированы порядок и вехи — содержание каждого пака собирается из твоего отчёта.</p>
+    <p>Не зашло по объёму — режем. Зашло легко — добавляем. Оба ответа правильные, и оба нужно сказать вслух.</p>
+  </div>
+
+</div>
+</body>
+</html>
